@@ -1,0 +1,19 @@
+CREATE DATABASE sorteadordata;
+
+DROP TABLE Words;
+
+create table Words
+(
+	ID INT IDENTITY(1,1) NOT NULL,
+	NAME VARCHAR(25) NOT NULL,
+	PRIMARY KEY (ID)
+);
+
+create table Words2
+(
+	ID INT NOT NULL IDENTITY,
+	NAME VARCHAR(25) NOT NULL,
+	CONSTRAINT PK_ID PRIMARY KEY (ID)
+);
+
+
