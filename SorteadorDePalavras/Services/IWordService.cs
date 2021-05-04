@@ -9,5 +9,7 @@ namespace SorteadorDePalavras.Services
         bool Register(WordRequest word);
         Word GetWord();
         List<Word> GetAll();
+        bool Delete(int id);
+        bool Edit(WordRequest word);
     }
 }

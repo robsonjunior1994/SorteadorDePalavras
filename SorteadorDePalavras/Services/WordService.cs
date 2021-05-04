@@ -8,8 +8,8 @@ namespace SorteadorDePalavras.Services
 {
     public class WordService : IWordService
     {
-        readonly IWordRepository _wordRepository;
-        public WordService(IWordRepository wordRepository)
+        readonly IWordData _wordRepository;
+        public WordService(IWordData wordRepository)
         {
             _wordRepository = wordRepository;
         }
@@ -42,6 +42,36 @@ namespace SorteadorDePalavras.Services
             listWord = _wordRepository.GetAll();
 
             return listWord;
+        }
+
+        public bool Delete(int id)
+        {
+            if(id > 0)
+            {
+                Word w = _wordRepository.Get(id);
+
+                if(w != null)
+                {
+                    _wordRepository.Delete(id);
+                    return true;
+                }
+                
+            }
+
+            return false;
+        }
+
+        public bool Edit(WordRequest word)
+        {
+            Word wordFromTheDataBase = _wordRepository.Get(word.IdExterno);
+            if(wordFromTheDataBase != null)
+            {
+                wordFromTheDataBase.Name = word.Name;
+                _wordRepository.Update(wordFromTheDataBase);
+                return true;
+            }
+
+            return false;
         }
     }
 }

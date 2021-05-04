@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace SorteadorDePalavras.Repository
 {
-    public interface IWordRepository
+    public interface IWordData
     {
-        void Save(Models.Word word);
+        void Save(Word word);
         Word Get(int id);
         List<Word> GetAll();
+        void Delete(int id);
+        void Update(Word w);
     }
 }

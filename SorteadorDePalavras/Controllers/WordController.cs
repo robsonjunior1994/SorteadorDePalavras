@@ -55,5 +55,26 @@ namespace SorteadorDePalavras.Controllers
 
             return BadRequest();
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            if (_wordService.Delete(id))
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpPut]
+        public IActionResult Edit(WordRequest word)
+        {
+            if (_wordService.Edit(word))
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
     }
 }

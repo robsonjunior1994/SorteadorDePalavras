@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 
 namespace SorteadorDePalavras.Repository
 {
-    class WordDAO : IWordRepository
+    class WordDAO : IWordData
     {
         readonly SqlConnection _wordContext;
         public WordDAO()
@@ -16,25 +16,50 @@ namespace SorteadorDePalavras.Repository
             _wordContext.Open();
         }
 
+        public void Delete(int id)
+        {
+            try
+            {
+                _wordContext.Open();
+                var deleteCmd = _wordContext.CreateCommand();
+                deleteCmd.CommandText = "DELETE FROM Words WHERE id = @id";
+
+                var paramId = new SqlParameter("id", id);
+                deleteCmd.Parameters.Add(paramId);
+
+                deleteCmd.ExecuteNonQuery();
+
+            }
+            catch (SqlException e)
+            {
+                throw new SystemException(e.Message, e);
+            }
+            finally
+            {
+                _wordContext.Close();
+            }
+        }
+
         public Word Get(int id)
         {
             try
             {
-                id = 1;
+                Word w = null;
                 var selectCmd = _wordContext.CreateCommand();
-                selectCmd.CommandText = "SELECT * FROM Words where @id";
+                selectCmd.CommandText = "SELECT * FROM Words where id = @id";
 
                 var paramId = new SqlParameter("id", id);
                 selectCmd.Parameters.Add(paramId);
 
                 var resultado = selectCmd.ExecuteReader();
 
-
-                Word w = new Word(Convert.ToString(resultado["name"]));
-                w.Id = Convert.ToInt32(resultado["Id"]);
+                while (resultado.Read())
+                {
+                   w = new Word(Convert.ToString(resultado["name"]));
+                    w.Id = Convert.ToInt32(resultado["Id"]);
+                }
 
                 return w;
-                
 
             } catch (SqlException e)
             {
@@ -73,7 +98,7 @@ namespace SorteadorDePalavras.Repository
             }
             finally
             {
-                //_wordContext.Close();
+                _wordContext.Close();
             }
         }
 
@@ -95,6 +120,30 @@ namespace SorteadorDePalavras.Repository
             }
 
             finally
+            {
+                _wordContext.Close();
+            }
+        }
+
+        public void Update(Word w)
+        {
+            try
+            {
+                _wordContext.Open();
+                var updateCmd = _wordContext.CreateCommand();
+                updateCmd.CommandText = "UPDATE Words SET Name = @Name WHERE id = @Id";
+
+                var paramId = new SqlParameter("Id", w.Id);
+                updateCmd.Parameters.Add(paramId);
+
+                var paramName = new SqlParameter("Name", w.Name);
+                updateCmd.Parameters.Add(paramName);
+
+                updateCmd.ExecuteNonQuery();
+            } catch(SqlException e)
+            {
+                throw new SystemException(e.Message, e);
+            } finally
             {
                 _wordContext.Close();
             }

@@ -29,7 +29,7 @@ namespace SorteadorDePalavras
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IWordService, WordService>();
-            services.AddScoped<IWordRepository, WordDAO>();
+            services.AddScoped<IWordData, WordDAO>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
